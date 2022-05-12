@@ -1,0 +1,21 @@
+{
+  "name": "likelion_week4",
+  "version": "1.0.0",
+  "main": "index.js",
+  "repository": "https://github.com/GabeenKim/likelion_week4.git",
+  "author": "GabeenKim <rlarkqls5551250@gmail.com>",
+  "license": "MIT",
+  "scripts": {
+    "dev": "nodemon src/index.js --exec babel-node"
+  },
+  "dependencies": {
+    "express": "^4.18.1"
+  },
+  "devDependencies": {
+    "@babel/core": "^7.17.10",
+    "@babel/node": "^7.17.10",
+    "@babel/preset-env": "^7.17.10",
+    "nodemon": "^2.0.16"
+  }
+  
+}
