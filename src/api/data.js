@@ -17,4 +17,11 @@ let data = [
     }
 ];
 
-export{ data};
+let User = [
+    {
+        email : "rlarkqls1250@naver.com",
+        password : "1234",
+        id : 1
+    }
+]
+export{ data, User};
