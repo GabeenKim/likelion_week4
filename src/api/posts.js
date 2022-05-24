@@ -5,6 +5,11 @@ const router = Router();
 let nextId = 4;
 
 router.get("/", (req,res) => {                                  //해당주소로 get 요청 보낼 시, 데이터가 하나라도 있으면 전체를 다 보여준다. 
+    if(data.length===0){                                        //데이터가 하나도 없을 시, []
+        return res.json({
+            data : []
+        });
+    }
     return res.json({
             data : data,
     });
@@ -24,12 +29,12 @@ router.get("/:postId", (req,res) => {
 });
 
 router.post("/", (req,res) =>{                                  //해당주소로 post 요청 보낼 시, 글 생성-> 생성된 글의 ID만 나타내기
-    const id = req.header("id");
+    const X_User_Id = req.header("id");
     const {content} = req.body;
     data.push({                                                 //해당 데이터 생성
         id : nextId++,
         content : content,
-        writer : id
+        writer : X_User_Id
     });
     return res.json({                                      
         data : {

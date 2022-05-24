@@ -8,6 +8,11 @@ let nextUser = 2;
 router.use("/posts", posts);
 
 router.get("/auth", (req,res) => {                                  //해당주소로 get 요청 보낼 시, 데이터가 하나라도 있으면 전체를 다 보여준다. 
+    if(User.length===0){                                        //데이터가 하나도 없을 시, []
+        return res.json({
+            data : []
+        });
+    }
     return res.json({
             data : User,
     });
