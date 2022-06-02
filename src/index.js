@@ -4,6 +4,8 @@ import api from "./api";
 const app = express();
 const port = 3300;
 const { sequelize } = require("../models");
+const dotenv = require('dotenv');                           //.env 파일에 정보를 저장하고 환경변수로 등록해주는 모듈
+dotenv.config();                                            // .env 파일을 읽어온다. 
 
 sequelize
   .sync({ force: true })

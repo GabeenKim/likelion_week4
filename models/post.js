@@ -1,11 +1,10 @@
-const { STRING}  = require('sequelize');
 const Sequelize = require('sequelize');
 
 module.exports = class Post extends Sequelize.Model{
     static init(sequelize){
         return super.init({                
             content : {
-                type : STRING(100)
+                type : Sequelize.STRING(100)
             },
 		}, {
             sequelize,

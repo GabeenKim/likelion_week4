@@ -1,14 +1,13 @@
-const { STRING } = require('sequelize');
 const Sequelize = require('sequelize');
 
 module.exports = class User extends Sequelize.Model{
     static init(sequelize){
         return super.init({                 
             email : {
-                type : STRING(50)
+                type : Sequelize.STRING(50)
             },
             password : {
-                type : STRING(20)
+                type : Sequelize.STRING(100)
             }
 		}, {
             sequelize,
