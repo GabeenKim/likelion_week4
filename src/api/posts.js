@@ -1,11 +1,24 @@
 import { Router } from "express";
 import Post from "../../models/post";
+import cors from "cors";
 
 const post = Router();
 const {verifyToken} = require('./middlewares');
 
-//조회
-post.get("/", async (req,res) => {                                   
+const corsOptions = {
+    origin : "http://localhost:3000",                         //허락하고자 하는 요청주소여야 함!
+    credentials: true,
+    methods : '*',
+    allowedHeaders : 'authorization',
+    exposedHeaders : 'authorization'
+}  
+post.options("*",cors(corsOptions));                  //PUT, DELETE 등 + 사용자 정의 헤더를 위해 pre-flight 요청해줘야함.
+
+//조회 - 헤더에 Access-Control-Allow-Origin 토큰 이용하기 
+post.get("/", async (req,res) => {               
+    res.header("Access-Control-Allow-Origin", "http://localhost:3000");
+    res.header("Access-Control-Allow-Credentials",  true);    
+
     const postDatas = await Post.findAll({});
     if(postDatas.length===0){                                        //데이터가 하나도 없을 시, []
         return res.json({
@@ -17,9 +30,11 @@ post.get("/", async (req,res) => {
     });
 });
 
-post.get("/:postId", async (req,res) => {                           
+post.get("/:postId" , async (req,res) => {    
+    res.header("Access-Control-Allow-Origin", "http://localhost:3000");
+    res.header("Access-Control-Allow-Credentials",  true);
+    
     const {postId} = req.params;
-
     const postDatas = await Post.findOne({                         //id가 postId와 동일한 것 중 한 개만 읽어온다. 
         where : {
             id : postId
@@ -35,8 +50,8 @@ post.get("/:postId", async (req,res) => {
     });
 });
 
-//생성
-post.post("/", verifyToken, async(req,res) =>{                     //해당주소로 post 요청 보낼 시, 글 생성-> 생성된 글의 ID만 나타내기
+//생성 - 모듈 이용
+post.post("/",cors(corsOptions), verifyToken, async(req,res) =>{                     //해당주소로 post 요청 보낼 시, 글 생성-> 생성된 글의 ID만 나타내기
     const jwtUserId = req.decoded.id;                              //jwt 검증된 id  
     const {content} = req.body;
    
@@ -44,7 +59,7 @@ post.post("/", verifyToken, async(req,res) =>{                     //해당주�
         content : content,
         UserId : jwtUserId
     });
-    
+  
     return res.json({                                      
         data : {
             post : {
@@ -54,8 +69,8 @@ post.post("/", verifyToken, async(req,res) =>{                     //해당주�
     });
 });
 
-//수정
-post.put("/:postId", verifyToken,async (req,res) => {                             
+//수정 -모듈 이용
+post.put("/:postId",cors(corsOptions), verifyToken,async (req,res) => {    
     const jwtUserId = req.decoded.id;            
     const {content} = req.body;                                
     const {postId} = req.params;                                
@@ -93,8 +108,8 @@ post.put("/:postId", verifyToken,async (req,res) => {
     });
 });
 
-//삭제
-post.delete("/:postId",verifyToken, async (req,res) =>{                              
+//삭제 -모듈 이용
+post.delete("/:postId",cors(corsOptions), verifyToken, async (req,res) =>{                              
     const jwtUserId = req.decoded.id;                                
     const {postId} = req.params;
     
@@ -104,7 +119,7 @@ post.delete("/:postId",verifyToken, async (req,res) =>{
         }
     });
 
-    if(!postDatas) {                                                //없는 글을 요청했을 시 
+    if(!postDatas) {                                                 //없는 글을 요청했을 시 
         return res.json({
             error : "That Post does not exist",
         }); 

@@ -1,5 +1,6 @@
 import express from "express";
 import api from "./api";
+import cors from "cors";
 
 const app = express();
 const port = 3300;
@@ -15,7 +16,6 @@ sequelize
   .catch((err) => {
     console.log(err);
   });
-
 
 app.use(express.json());
 app.use("/api", api);

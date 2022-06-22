@@ -72,7 +72,7 @@ auth.post("/login", async(req,res)=> {
             email: req.body.email,
             password: req.body.password,
         }, process.env.JWT_SECRET, {
-            expiresIn: '5m', //1분
+            expiresIn: '10m', 
             issuer: 'nodebird',
         });
         return res.json({
