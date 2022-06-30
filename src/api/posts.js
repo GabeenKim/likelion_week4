@@ -1,6 +1,6 @@
 import { Router } from "express";
 import Post from "../../models/post";
-import cors from "cors";
+import cors from "cors";                                      //여기에 불러와야 auth 라우터에 적용이 안 돼서,,?
 
 const post = Router();
 const {verifyToken} = require('./middlewares');
@@ -8,11 +8,11 @@ const {verifyToken} = require('./middlewares');
 const corsOptions = {
     origin : "http://localhost:3000",                         //허락하고자 하는 요청주소여야 함!
     credentials: true,
-    methods : '*',
+    methods : '*',                                            //GET,HEAD,POST만 기본 메소드. 나머지는 설정해줘야함. 
     allowedHeaders : 'authorization',
     exposedHeaders : 'authorization'
 }  
-post.options("*",cors(corsOptions));                  //PUT, DELETE 등 + 사용자 정의 헤더를 위해 pre-flight 요청해줘야함.
+post.options("*",cors(corsOptions));                           //PUT, DELETE 등 + 사용자 정의 헤더를 위해 pre-flight 요청해줘야함.
 
 //조회 - 헤더에 Access-Control-Allow-Origin 토큰 이용하기 
 post.get("/", async (req,res) => {               
